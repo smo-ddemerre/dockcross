@@ -2,7 +2,7 @@
 # run the container on a x86_64 host.
 # This image is not based on "pypa/manylinux2014_aarch64" because it would require the host to be aarch64.
 # For more details, read https://github.com/dockcross/dockcross/issues/367
-FROM dockcross/manylinux2014-x64
+FROM dockcross/manylinux2014-x64:20210708-94745ff
 
 # This is for 64-bit ARM Manylinux machine
 
@@ -22,6 +22,16 @@ RUN \
 
 # The CROSS_TRIPLE is a configured alias of the "aarch64-unknown-linux-gnueabi" target.
 ENV CROSS_TRIPLE aarch64-unknown-linux-gnueabi
+
+RUN cd ${XCC_PREFIX}/${CROSS_TRIPLE}/${CROSS_TRIPLE}/include && \
+    wget https://gist.githubusercontent.com/nhatminhle/5181506/raw/541482dbc61862bba8a156edaae57faa2995d791/stdatomic.h
+
+# Running scripts to cross compile python and copy libstdc++ into toolcain
+ADD manylinux2014-aarch64/xc_script /tmp/
+RUN PASS=2 /tmp/docker_setup_scrpits/copy_libstd.sh
+RUN /tmp/docker_setup_scrpits/prepare_cross_env.sh
+RUN rm -rf /tmp/docker_setup_scrpits
+RUN rm -rf /tmp/usr/
 
 ENV CROSS_ROOT ${XCC_PREFIX}/${CROSS_TRIPLE}
 ENV AS=${CROSS_ROOT}/bin/${CROSS_TRIPLE}-as \

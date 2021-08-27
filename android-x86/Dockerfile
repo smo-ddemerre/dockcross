@@ -4,20 +4,19 @@ RUN apt-get update && apt-get install -y unzip
 
 ENV CROSS_TRIPLE=i686-linux-android
 ENV CROSS_ROOT=/usr/${CROSS_TRIPLE}
-ENV AS=${CROSS_ROOT}/bin/${CROSS_TRIPLE}-as \
-    AR=${CROSS_ROOT}/bin/${CROSS_TRIPLE}-ar \
-    CC=${CROSS_ROOT}/bin/${CROSS_TRIPLE}-clang \
-    CPP=${CROSS_ROOT}/bin/${CROSS_TRIPLE}-cpp \
-    CXX=${CROSS_ROOT}/bin/${CROSS_TRIPLE}-clang++ \
-    LD=${CROSS_ROOT}/bin/${CROSS_TRIPLE}-ld \
-    FC=${CROSS_ROOT}/bin/${CROSS_TRIPLE}-gfortran
+ENV AS=${CROSS_ROOT}/bin/llvm-as \
+    AR=${CROSS_ROOT}/bin/llvm-ar \
+    CC=${CROSS_ROOT}/bin/clang \
+    CXX=${CROSS_ROOT}/bin/clang++ \
+    LD=${CROSS_ROOT}/bin/ld
 
-ENV ANDROID_NDK_REVISION 22b
-ENV ANDROID_NDK_API 22
+ENV ANDROID_NDK_REVISION 23
+ENV ANDROID_NDK_API 23
+
 RUN mkdir -p /build && \
     cd /build && \
-    curl -O https://dl.google.com/android/repository/android-ndk-r${ANDROID_NDK_REVISION}-linux-x86_64.zip && \
-    unzip ./android-ndk-r${ANDROID_NDK_REVISION}-linux-x86_64.zip && \
+    curl -O https://dl.google.com/android/repository/android-ndk-r${ANDROID_NDK_REVISION}-linux.zip && \
+    unzip ./android-ndk-r${ANDROID_NDK_REVISION}-linux.zip && \
     cd android-ndk-r${ANDROID_NDK_REVISION} && \
     ./build/tools/make_standalone_toolchain.py \
       --arch x86 \
