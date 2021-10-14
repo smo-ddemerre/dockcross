@@ -1,10 +1,12 @@
 FROM dockcross/base:latest
 
+LABEL maintainer="Matt McCormick matt.mccormick@kitware.com"
+
 # This is for 64-bit x86 Linux machine
 
 # Buildroot version
-# crosstool-ng master 2021-08-21
-ENV BR_VERSION 181a5e229b347c1996eeca7d7727ee66bc566f01
+# buildroot master 2021-09-21
+ENV BR_VERSION 279167ee8dc37b1c41ff9076d6769c950d5a33f1
 
 #include "common.buildroot"
 

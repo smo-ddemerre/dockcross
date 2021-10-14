@@ -5,7 +5,7 @@ if (( $# >= 1 )); then
     build_file=build-${image%:*}
     shift 1
 
-    make_arg=$*
+    make_arg=$@
     echo "make arg: $make_arg"
 
     #echo "Pulling dockcross/$image"
